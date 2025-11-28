@@ -1,0 +1,279 @@
+backend:
+  name: proxy
+  proxy_url: http://localhost:8081/api/v1
+  branch: development
+
+# Enable local backend for development
+local_backend: true
+
+# Media storage
+media_folder: 'src/assets/images'
+public_folder: '/assets/images'
+
+# Publishing mode
+publish_mode: editorial_workflow
+
+# Site URL for previews
+site_url: https://customfades.netlify.app
+display_url: https://customfades.netlify.app
+
+# Logo
+logo_url: /assets/icons/logo-black.svg
+
+# Collections
+collections:
+  # Blog Posts
+  - name: 'blog'
+    label: 'Blog Posts'
+    label_singular: 'Blog Post'
+    folder: 'content/blog'
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    extension: md
+    format: frontmatter
+    editor:
+      preview: true
+    fields:
+      - {
+          label: 'Title',
+          name: 'title',
+          widget: 'string',
+          hint: 'The main title of your blog post',
+        }
+      - {
+          label: 'Publish Date',
+          name: 'date',
+          widget: 'datetime',
+          format: 'YYYY-MM-DDTHH:mm:ssZ',
+          date_format: 'YYYY-MM-DD',
+          time_format: 'HH:mm',
+        }
+      - {
+          label: 'Subtitle',
+          name: 'subtitle',
+          widget: 'string',
+          required: false,
+          hint: 'Optional subtitle or description',
+        }
+      - {
+          label: 'Cover Image',
+          name: 'cover',
+          widget: 'image',
+          required: false,
+          hint: 'Featured image for the post',
+        }
+      - {
+          label: 'Tags',
+          name: 'tags',
+          widget: 'string',
+          hint: 'Comma-separated tags (e.g., haircuts, style, tips)',
+        }
+      - {
+          label: 'Published',
+          name: 'published',
+          widget: 'boolean',
+          default: true,
+          hint: 'Toggle to publish/unpublish',
+        }
+      - {
+          label: 'Body',
+          name: 'body',
+          widget: 'markdown',
+          hint: 'Main content of your post',
+        }
+
+  # Wall of Fades Gallery
+  - name: 'gallery'
+    label: 'Wall of Fades'
+    label_singular: 'Gallery Image'
+    folder: 'content/gallery'
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    extension: md
+    format: frontmatter
+    summary: '{{title}} - {{category}}'
+    sortable_fields: ['order', 'date', 'title']
+    fields:
+      - {
+          label: 'Title',
+          name: 'title',
+          widget: 'string',
+          hint: "Name or description of this haircut (e.g., 'Client Haircut 1')",
+        }
+      - {
+          label: 'Image',
+          name: 'image',
+          widget: 'image',
+          hint: 'Upload haircut image',
+          media_folder: '/src/assets/images',
+        }
+      - {
+          label: 'Caption',
+          name: 'caption',
+          widget: 'text',
+          required: false,
+          hint: "Optional description (e.g., 'Fresh fade with clean lineup')",
+        }
+      - {
+          label: 'Category',
+          name: 'category',
+          widget: 'select',
+          options: ['Haircuts', 'Beards', 'Styles', 'Other'],
+          default: 'Haircuts',
+          hint: 'Type of service shown',
+        }
+      - {
+          label: 'Featured on Homepage',
+          name: 'featured',
+          widget: 'boolean',
+          default: true,
+          hint: 'Show in Wall of Fades gallery',
+        }
+      - {
+          label: 'Display Order',
+          name: 'order',
+          widget: 'number',
+          default: 0,
+          value_type: 'int',
+          hint: 'Lower numbers appear first (e.g., 1, 2, 3...)',
+        }
+      - {
+          label: 'Published',
+          name: 'published',
+          widget: 'boolean',
+          default: true,
+          hint: 'Uncheck to hide from gallery',
+        }
+      - {
+          label: 'Date Added',
+          name: 'date',
+          widget: 'datetime',
+          format: 'YYYY-MM-DD',
+          date_format: 'YYYY-MM-DD',
+          time_format: false,
+          hint: 'When this was added',
+        }
+
+  # Services
+  - name: 'services'
+    label: 'Services'
+    label_singular: 'Service'
+    folder: 'content/services'
+    create: true
+    slug: '{{slug}}'
+    identifier_field: name
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: 'Service Name', name: 'name', widget: 'string' }
+      - { label: 'Description', name: 'description', widget: 'text' }
+      - {
+          label: 'Price',
+          name: 'price',
+          widget: 'string',
+          hint: 'e.g., $40 or Starting at $35',
+        }
+      - {
+          label: 'Duration',
+          name: 'duration',
+          widget: 'string',
+          required: false,
+          hint: 'e.g., 45 minutes',
+        }
+      - {
+          label: 'Icon',
+          name: 'icon',
+          widget: 'image',
+          required: false,
+          hint: 'Service icon/image',
+        }
+      - {
+          label: 'Order',
+          name: 'order',
+          widget: 'number',
+          default: 0,
+          value_type: 'int',
+        }
+      - { label: 'Active', name: 'active', widget: 'boolean', default: true }
+
+  # Site Settings
+  - name: 'settings'
+    label: 'Site Settings'
+    files:
+      - label: 'General Settings'
+        name: 'general'
+        file: 'content/settings/general.json'
+        fields:
+          - {
+              label: 'Site Title',
+              name: 'title',
+              widget: 'string',
+              default: 'CustomFades',
+            }
+          - { label: 'Site Description', name: 'description', widget: 'text' }
+          - { label: 'Phone Number', name: 'phone', widget: 'string' }
+          - { label: 'Email', name: 'email', widget: 'string' }
+          - { label: 'Address', name: 'address', widget: 'text' }
+          - { label: 'Instagram URL', name: 'instagram', widget: 'string' }
+          - {
+              label: 'Facebook URL',
+              name: 'facebook',
+              widget: 'string',
+              required: false,
+            }
+          - { label: 'Google Maps URL', name: 'google_maps', widget: 'string' }
+          - {
+              label: 'Booking URL',
+              name: 'booking_url',
+              widget: 'string',
+              hint: 'Google Calendar or booking system URL',
+            }
+
+      - label: 'Homepage'
+        name: 'homepage'
+        file: 'content/settings/homepage.json'
+        fields:
+          - { label: 'Hero Title', name: 'hero_title', widget: 'string' }
+          - { label: 'Hero Subtitle', name: 'hero_subtitle', widget: 'text' }
+          - {
+              label: 'Hero Background Image',
+              name: 'hero_image',
+              widget: 'image',
+            }
+          - { label: 'About Me Title', name: 'about_title', widget: 'string' }
+          - { label: 'About Me Text', name: 'about_text', widget: 'markdown' }
+          - {
+              label: 'About Me Foreground Image',
+              name: 'about_image_foreground',
+              widget: 'image',
+              hint: 'Main profile/portrait image (appears in front)',
+            }
+          - {
+              label: 'About Me Background Image',
+              name: 'about_image_background',
+              widget: 'image',
+              required: false,
+              hint: 'Optional background image or logo (appears behind foreground)',
+            }
+          - {
+              label: 'Services Section Title',
+              name: 'services_title',
+              widget: 'string',
+            }
+          - {
+              label: 'Services Section Subtitle',
+              name: 'services_subtitle',
+              widget: 'text',
+            }
+          - {
+              label: 'Gallery Section Title',
+              name: 'gallery_title',
+              widget: 'string',
+            }
+          - {
+              label: 'Contact Section Title',
+              name: 'contact_title',
+              widget: 'string',
+            }

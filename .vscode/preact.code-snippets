@@ -1,0 +1,173 @@
+{
+	"Preact Functional Component": {
+		"prefix": "pcomp",
+		"body": [
+			"import { h } from 'preact';",
+			"import style from './style.module.css';",
+			"",
+			"const ${1:ComponentName} = ({ ${2:props} }) => {",
+			"\treturn (",
+			"\t\t<div class={style.${3:container}}>",
+			"\t\t\t${4:// Component content}",
+			"\t\t</div>",
+			"\t);",
+			"};",
+			"",
+			"export default ${1:ComponentName};"
+		],
+		"description": "Create a Preact functional component with CSS modules"
+	},
+	"Preact Component with useState": {
+		"prefix": "pcomps",
+		"body": [
+			"import { h } from 'preact';",
+			"import { useState } from 'preact/hooks';",
+			"import style from './style.module.css';",
+			"",
+			"const ${1:ComponentName} = () => {",
+			"\tconst [${2:state}, set${2/(.*)/${1:/capitalize}/}] = useState(${3:null});",
+			"",
+			"\treturn (",
+			"\t\t<div class={style.${4:container}}>",
+			"\t\t\t${5:// Component content}",
+			"\t\t</div>",
+			"\t);",
+			"};",
+			"",
+			"export default ${1:ComponentName};"
+		],
+		"description": "Create a Preact component with useState hook"
+	},
+	"useState Hook": {
+		"prefix": "phook",
+		"body": [
+			"const [${1:state}, set${1/(.*)/${1:/capitalize}/}] = useState(${2:initialValue});"
+		],
+		"description": "Create useState hook"
+	},
+	"useEffect Hook": {
+		"prefix": "peff",
+		"body": [
+			"useEffect(() => {",
+			"\t${1:// Effect logic}",
+			"\t",
+			"\treturn () => {",
+			"\t\t${2:// Cleanup}",
+			"\t};",
+			"}, [${3:dependencies}]);"
+		],
+		"description": "Create useEffect hook with cleanup"
+	},
+	"Route Component": {
+		"prefix": "proute",
+		"body": [
+			"import { h } from 'preact';",
+			"import style from './style.module.css';",
+			"",
+			"const ${1:PageName} = () => (",
+			"\t<div class={style.${2:page}}>",
+			"\t\t<h1>${3:Page Title}</h1>",
+			"\t\t${4:// Page content}",
+			"\t</div>",
+			");",
+			"",
+			"export default ${1:PageName};"
+		],
+		"description": "Create a route/page component"
+	},
+	"Async Component": {
+		"prefix": "pasync",
+		"body": [
+			"import { h } from 'preact';",
+			"import { useState, useEffect } from 'preact/hooks';",
+			"import style from './style.module.css';",
+			"",
+			"const ${1:ComponentName} = () => {",
+			"\tconst [${2:data}, set${2/(.*)/${1:/capitalize}/}] = useState(null);",
+			"\tconst [loading, setLoading] = useState(true);",
+			"\tconst [error, setError] = useState(null);",
+			"",
+			"\tuseEffect(() => {",
+			"\t\tconst fetchData = async () => {",
+			"\t\t\ttry {",
+			"\t\t\t\tconst response = await fetch('${3:url}');",
+			"\t\t\t\tconst result = await response.json();",
+			"\t\t\t\tset${2/(.*)/${1:/capitalize}/}(result);",
+			"\t\t\t} catch (err) {",
+			"\t\t\t\tsetError(err.message);",
+			"\t\t\t} finally {",
+			"\t\t\t\tsetLoading(false);",
+			"\t\t\t}",
+			"\t\t};",
+			"\t\t",
+			"\t\tfetchData();",
+			"\t}, []);",
+			"",
+			"\tif (loading) return <div>Loading...</div>;",
+			"\tif (error) return <div>Error: {error}</div>;",
+			"",
+			"\treturn (",
+			"\t\t<div class={style.${4:container}}>",
+			"\t\t\t${5:// Component content}",
+			"\t\t</div>",
+			"\t);",
+			"};",
+			"",
+			"export default ${1:ComponentName};"
+		],
+		"description": "Create async component with loading and error states"
+	},
+	"Modal Component": {
+		"prefix": "pmodal",
+		"body": [
+			"import { h } from 'preact';",
+			"import { useEffect } from 'preact/hooks';",
+			"import style from './style.module.css';",
+			"",
+			"const ${1:Modal} = ({ isOpen, onClose, children }) => {",
+			"\tuseEffect(() => {",
+			"\t\tconst handleEscape = (e) => {",
+			"\t\t\tif (e.key === 'Escape') onClose();",
+			"\t\t};",
+			"\t\t",
+			"\t\tif (isOpen) {",
+			"\t\t\tdocument.addEventListener('keydown', handleEscape);",
+			"\t\t\tdocument.body.style.overflow = 'hidden';",
+			"\t\t}",
+			"\t\t",
+			"\t\treturn () => {",
+			"\t\t\tdocument.removeEventListener('keydown', handleEscape);",
+			"\t\t\tdocument.body.style.overflow = '';",
+			"\t\t};",
+			"\t}, [isOpen, onClose]);",
+			"",
+			"\tif (!isOpen) return null;",
+			"",
+			"\treturn (",
+			"\t\t<div class={style.overlay} onClick={onClose}>",
+			"\t\t\t<div class={style.modal} onClick={(e) => e.stopPropagation()}>",
+			"\t\t\t\t{children}",
+			"\t\t\t</div>",
+			"\t\t</div>",
+			"\t);",
+			"};",
+			"",
+			"export default ${1:Modal};"
+		],
+		"description": "Create modal component with overlay and escape handling"
+	},
+	"Console Log": {
+		"prefix": "cl",
+		"body": [
+			"console.log('${1:label}:', ${2:value});"
+		],
+		"description": "Console log with label"
+	},
+	"Import Component": {
+		"prefix": "imp",
+		"body": [
+			"import ${1:Component} from '${2:./path}';"
+		],
+		"description": "Import statement"
+	}
+}

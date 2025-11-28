@@ -1,0 +1,49 @@
+{
+  "facebook": "",
+  "booking_url": "https://calendar.google.com/calendar/appointments/schedules/YOUR_CALENDAR_ID",
+  "phone": "+1 (555) 123-4567",
+  "business_hours": {
+    "monday": {
+      "open": "11:00",
+      "close": "5:00",
+      "closed": true
+    },
+    "tuesday": {
+      "open": "11:00",
+      "close": "5:00",
+      "closed": true
+    },
+    "wednesday": {
+      "open": "11:00",
+      "close": "5:00",
+      "closed": true
+    },
+    "thursday": {
+      "open": "11:00",
+      "close": "5:00",
+      "closed": true
+    },
+    "friday": {
+      "open": "11:00",
+      "close": "5:00",
+      "closed": true
+    },
+    "saturday": {
+      "open": "11:00",
+      "close": "5:00",
+      "closed": true
+    },
+    "sunday": {
+      "open": "11:00",
+      "close": "5:00",
+      "closed": true
+    }
+  },
+  "instagram": "https://www.instagram.com/customfadesbarber",
+  "address": "123 Main Street\nYour City, State 12345",
+  "title": "CustomFades",
+  "timezone": "America/Chicago",
+  "email": "info@customfades.com",
+  "description": "Premium barbershop services specializing in custom fades, haircuts, and beard grooming. Book your appointment today!",
+  "google_maps": "https://www.google.com/maps"
+}

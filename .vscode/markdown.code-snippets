@@ -1,0 +1,101 @@
+{
+	"Blog Post Template": {
+		"prefix": "blog",
+		"body": [
+			"---",
+			"title: \"${1:Post Title}\"",
+			"date: ${2:$CURRENT_YEAR-$CURRENT_MONTH-${CURRENT_DATE}T$CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND}Z",
+			"subtitle: \"${3:Post subtitle or description}\"",
+			"cover: \"/assets/${4:image.jpg}\"",
+			"tags: \"${5:barbershop, haircuts, style}\"",
+			"---",
+			"",
+			"${6:Write your blog post content here...}",
+			"",
+			"## ${7:Section Heading}",
+			"",
+			"${8:Section content...}",
+			""
+		],
+		"description": "Blog post template with frontmatter"
+	},
+	"Frontmatter": {
+		"prefix": "meta",
+		"body": [
+			"---",
+			"title: \"${1:Title}\"",
+			"date: ${2:$CURRENT_YEAR-$CURRENT_MONTH-${CURRENT_DATE}T$CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND}Z",
+			"${3:subtitle: \"Subtitle\"}",
+			"${4:cover: \"/assets/image.jpg\"}",
+			"tags: \"${5:tag1, tag2, tag3}\"",
+			"---",
+			""
+		],
+		"description": "Frontmatter metadata block"
+	},
+	"Code Block": {
+		"prefix": "code",
+		"body": [
+			"```${1:javascript}",
+			"${2:// Code here}",
+			"```"
+		],
+		"description": "Markdown code block"
+	},
+	"Image with Alt": {
+		"prefix": "img",
+		"body": [
+			"![${1:Alt text}](${2:/assets/image.jpg})"
+		],
+		"description": "Markdown image with alt text"
+	},
+	"Link": {
+		"prefix": "link",
+		"body": [
+			"[${1:Link text}](${2:https://example.com})"
+		],
+		"description": "Markdown link"
+	},
+	"Heading Levels": {
+		"prefix": "h",
+		"body": [
+			"${1|#,##,###,####,#####,######|} ${2:Heading}"
+		],
+		"description": "Markdown heading"
+	},
+	"Unordered List": {
+		"prefix": "ul",
+		"body": [
+			"- ${1:List item 1}",
+			"- ${2:List item 2}",
+			"- ${3:List item 3}"
+		],
+		"description": "Unordered list"
+	},
+	"Ordered List": {
+		"prefix": "ol",
+		"body": [
+			"1. ${1:List item 1}",
+			"2. ${2:List item 2}",
+			"3. ${3:List item 3}"
+		],
+		"description": "Ordered list"
+	},
+	"Blockquote": {
+		"prefix": "quote",
+		"body": [
+			"> ${1:Quote text}"
+		],
+		"description": "Blockquote"
+	},
+	"Table": {
+		"prefix": "table",
+		"body": [
+			"| ${1:Column 1} | ${2:Column 2} | ${3:Column 3} |",
+			"|--------------|--------------|--------------|",
+			"| ${4:Cell 1}   | ${5:Cell 2}   | ${6:Cell 3}   |",
+			"| ${7:Cell 4}   | ${8:Cell 5}   | ${9:Cell 6}   |"
+		],
+		"description": "Markdown table"
+	}
+}
