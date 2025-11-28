@@ -1,51 +1,113 @@
 {
   "private": true,
-  "name": "blog",
-  "description": "Preact's netlify CMS template",
-  "version": "0.1.3",
+  "name": "customfades-website",
+  "description": "CustomFades Photography Portfolio & Blog",
+  "version": "2.0.0",
   "license": "MIT",
+  "bin": {
+    "customfades": "./cli/index.js"
+  },
   "scripts": {
+    "cf": "node cli/index.js",
+    "cf:link": "npm link",
+    "cf:unlink": "npm unlink -g customfades-website",
     "start": "per-env",
     "start:production": "npm run -s serve",
     "start:development": "npm run -s dev",
-    "build": "preact build --prerenderUrls ./prerender-urls.js",
-    "dev": "preact watch --prerender --prerenderUrls ./prerender-urls.js",
-    "lint": "eslint src",
-    "test": "jest"
+    "build": "preact build",
+    "build:prerender": "preact build --prerenderUrls ./prerender-urls.js",
+    "build:vite": "vite build",
+    "build:analyze": "npm run build:vite && npx vite-bundle-analyzer build/assets",
+    "build:production": "NODE_ENV=production vite build",
+    "dev": "preact watch",
+    "dev:prerender": "preact watch --prerender --prerenderUrls ./prerender-urls.js",
+    "dev:vite": "vite",
+    "dev:cms": "npx netlify-cms-proxy-server",
+    "preview": "vite preview",
+    "preview:build": "npm run build:vite && npm run preview",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,json}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,scss,json}\"",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ui": "vitest --ui",
+    "test:vite": "vitest",
+    "type-check": "tsc --noEmit",
+    "prepare": "husky",
+    "serve": "preact build && preact serve",
+    "analyze": "webpack-bundle-analyzer build/static/js/*.js",
+    "compress": "npx gzipper compress ./build",
+    "deploy:netlify": "npm run build:vite && netlify deploy --prod --dir=build",
+    "deploy:preview": "npm run build:vite && netlify deploy --dir=build"
   },
   "eslintConfig": {
-    "extends": "eslint-config-synacor"
+    "extends": [
+      "preact",
+      "@typescript-eslint/recommended"
+    ]
   },
   "eslintIgnore": [
     "build/*"
   ],
   "devDependencies": {
-    "eslint": "^4.9.0",
-    "eslint-config-synacor": "^2.0.2",
-    "esm": "^3.2.25",
-    "glob": "^7.1.4",
-    "jest": "^21.2.1",
-    "jest-preset-preact": "^1.0.0",
+    "@preact/preset-vite": "^2.9.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/preact": "^3.2.4",
+    "@testing-library/user-event": "^14.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
+    "@vitejs/plugin-legacy": "^5.4.2",
+    "@vitest/ui": "^2.1.8",
+    "eslint": "^9.14.0",
+    "eslint-config-preact": "^1.5.0",
+    "glob": "^11.0.0",
+    "husky": "^9.1.6",
+    "jest": "^29.7.0",
+    "jest-preset-preact": "^4.1.0",
+    "jsdom": "^25.0.1",
+    "lint-staged": "^15.2.10",
     "markdown": "^0.5.0",
+    "netlify-cms-proxy-server": "^1.3.24",
     "per-env": "^1.0.2",
-    "preact-cli": "^3.0.1",
-    "preact-render-spy": "^1.2.1",
-    "react-syntax-highlighter": "^12.2.1",
-    "webpack-bundle-analyzer": "^3.4.1"
+    "preact-cli": "^3.5.1",
+    "preact-render-spy": "^1.3.0",
+    "prettier": "^3.3.3",
+    "react-syntax-highlighter": "^15.5.0",
+    "terser": "^5.44.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.8",
+    "webpack-bundle-analyzer": "^4.10.2"
   },
   "dependencies": {
     "@preact/prerender-data-provider": "^3.0.1",
-    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-mozjpeg": "^10.0.0",
     "imagemin-webpack-plugin": "^2.4.2",
-    "markdown-to-jsx": "^6.11.4",
-    "preact": "^10.4.6",
+    "markdown-to-jsx": "^7.5.0",
+    "parse-md": "^2.0.4",
+    "preact": "^10.24.3",
     "preact-cli-plugin-netlify": "^1.6.0",
-    "preact-render-to-string": "^5.1.10",
-    "preact-router": "^3.0.1",
-    "parse-md": "^2.0.4"
+    "preact-render-to-string": "^6.5.11",
+    "preact-router": "^4.1.2",
+    "web-vitals": "^5.1.0"
   },
   "jest": {
-    "preset": "jest-preset-preact"
+    "preset": "jest-preset-preact",
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-dom"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,scss,json,md}": [
+      "prettier --write"
+    ]
   },
   "bugs": {
     "url": "https://github.com/preactjs/preact-netlify/issues"

@@ -1,40 +1,394 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager</title>
+  <meta name="robots" content="noindex" />
+  <title>CustomFades CMS - Content Manager</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/logo-black.svg" />
+  
+  <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+  <!-- Custom Admin Styles -->
+  <style>
+    :root {
+      --cf-primary: #BFBB50;
+      --cf-dark: #231F20;
+      --cf-accent: #3da7f8;
+      --cf-success: #10b981;
+      --cf-warning: #f59e0b;
+      --cf-error: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    /* Loading Screen */
+    #cms-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--cf-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+    }
+
+    #cms-loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(191, 187, 80, 0.2);
+      border-top-color: var(--cf-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      color: var(--cf-primary);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .loading-subtext {
+      margin-top: 8px;
+      color: rgba(191, 187, 80, 0.7);
+      font-size: 14px;
+    }
+
+    /* Custom CMS Styles Override */
+    [data-slate-editor] {
+      font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* Header Customization */
+    [class*="AppHeader"] {
+      background: var(--cf-dark) !important;
+      border-bottom: 2px solid var(--cf-primary) !important;
+    }
+
+    [class*="AppHeaderButton"] {
+      color: white !important;
+      transition: all 0.3s ease !important;
+    }
+
+    [class*="AppHeaderButton"]:hover {
+      background: rgba(191, 187, 80, 0.1) !important;
+      color: var(--cf-primary) !important;
+    }
+
+    /* Sidebar Customization */
+    [class*="SidebarContainer"] {
+      background: #1a1818 !important;
+      border-right: 1px solid rgba(191, 187, 80, 0.2) !important;
+    }
+
+    [class*="SidebarNavLink"] {
+      color: rgba(255, 255, 255, 0.8) !important;
+      transition: all 0.3s ease !important;
+    }
+
+    [class*="SidebarNavLink"]:hover,
+    [class*="SidebarNavLinkActive"] {
+      background: rgba(191, 187, 80, 0.1) !important;
+      color: var(--cf-primary) !important;
+      border-left: 3px solid var(--cf-primary) !important;
+    }
+
+    /* Buttons */
+    button[class*="Button"] {
+      transition: all 0.3s ease !important;
+      font-weight: 500 !important;
+    }
+
+    button[class*="ButtonPrimary"],
+    button[class*="button-primary"] {
+      background: var(--cf-primary) !important;
+      color: var(--cf-dark) !important;
+      border: none !important;
+    }
+
+    button[class*="ButtonPrimary"]:hover,
+    button[class*="button-primary"]:hover {
+      background: #d4cf5c !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 4px 12px rgba(191, 187, 80, 0.3) !important;
+    }
+
+    /* Cards */
+    [class*="Card"] {
+      border-radius: 8px !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+      transition: all 0.3s ease !important;
+    }
+
+    [class*="Card"]:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* Collection Items */
+    [class*="ListCard"] {
+      border-left: 3px solid transparent !important;
+      transition: all 0.3s ease !important;
+    }
+
+    [class*="ListCard"]:hover {
+      border-left-color: var(--cf-primary) !important;
+      background: rgba(191, 187, 80, 0.02) !important;
+    }
+
+    /* Input Fields */
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      border-radius: 6px !important;
+      border: 2px solid #e5e7eb !important;
+      transition: all 0.3s ease !important;
+      font-family: 'Poppins', sans-serif !important;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--cf-primary) !important;
+      box-shadow: 0 0 0 3px rgba(191, 187, 80, 0.1) !important;
+      outline: none !important;
+    }
+
+    /* Success/Error States */
+    [class*="toast-success"],
+    [class*="Toast-success"] {
+      background: var(--cf-success) !important;
+    }
+
+    [class*="toast-error"],
+    [class*="Toast-error"] {
+      background: var(--cf-error) !important;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--cf-primary);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #d4cf5c;
+    }
+
+    /* Welcome Message */
+    .cms-welcome {
+      padding: 40px;
+      text-align: center;
+      background: white;
+      border-radius: 12px;
+      margin: 40px auto;
+      max-width: 600px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .cms-welcome h1 {
+      font-family: 'Courgette', cursive;
+      color: var(--cf-primary);
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .cms-welcome p {
+      color: #666;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cms-welcome {
+        margin: 20px;
+        padding: 30px 20px;
+      }
+
+      .cms-welcome h1 {
+        font-size: 36px;
+      }
+    }
+  </style>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Courgette&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Include the script that builds the page and powers Netlify CMS -->
+  <!-- Loading Screen -->
+  <div id="cms-loading">
+    <div class="loader"></div>
+    <div class="loading-text">CustomFades CMS</div>
+    <div class="loading-subtext">Loading content manager...</div>
+  </div>
+
+  <!-- Netlify CMS will mount here -->
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+  
+  <!-- Syntax Highlighting -->
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  
+  <!-- Initialize CMS with custom config path -->
+  <script>
+    CMS.init({
+      config: {
+        load_config_file: true
+      }
+    });
+  </script>
+  
+  <!-- Custom CMS Configuration -->
   <script type="module">
-    import htm from 'https://unpkg.com/htm?module'
+    import htm from 'https://unpkg.com/htm?module';
     const html = htm.bind(h);
+
+    // Hide loading screen when CMS is ready
+    setTimeout(() => {
+      const loading = document.getElementById('cms-loading');
+      if (loading) {
+        loading.classList.add('hidden');
+        setTimeout(() => loading.remove(), 300);
+      }
+    }, 2000);
+
+    // Custom Preview Component
     const PostPreview = createClass({
       render: function() {
         const {entry, widgetFor} = this.props;
-        const image = entry.getIn(['data', 'cover'])
+        const image = entry.getIn(['data', 'cover']);
+        const title = entry.getIn(['data', 'title']);
+        const subtitle = entry.getIn(['data', 'subtitle']);
+        const date = entry.getIn(['data', 'date']);
+        const tags = entry.getIn(['data', 'tags']);
+        
         let imageMarkup = '';
         if (image) {
-          imageMarkup = html`<div><img src='${image.toString()}'/></div>`;
-        }
-        return (
-          html`
-            <div>
-              <h1 className='blogTitle'>${entry.getIn(['data', 'title'])}</h1>
-              <caption className='blogSubTitle'>${entry.getIn(['data', 'subtitle'])}</caption>
-              ${imageMarkup}
-              <div className='text'>${widgetFor('body')}</div>
+          imageMarkup = html`
+            <div style="margin: 20px 0;">
+              <img 
+                src='${image.toString()}' 
+                alt="${title}"
+                style="width: 100%; max-width: 800px; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
+              />
             </div>
-          `
-        );
+          `;
+        }
+
+        let dateMarkup = '';
+        if (date) {
+          const formattedDate = new Date(date.toString()).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          dateMarkup = html`
+            <div style="color: #666; font-size: 14px; margin: 10px 0;">
+              📅 ${formattedDate}
+            </div>
+          `;
+        }
+
+        let tagsMarkup = '';
+        if (tags) {
+          const tagList = tags.toString().split(',').map(tag => tag.trim());
+          tagsMarkup = html`
+            <div style="margin: 15px 0;">
+              ${tagList.map(tag => html`
+                <span style="display: inline-block; background: #BFBB50; color: #231F20; padding: 4px 12px; border-radius: 16px; font-size: 12px; margin-right: 8px; margin-bottom: 8px; font-weight: 500;">
+                  ${tag}
+                </span>
+              `)}
+            </div>
+          `;
+        }
+
+        return html`
+          <div style="max-width: 900px; margin: 0 auto; padding: 40px 20px; font-family: 'Poppins', sans-serif;">
+            <article style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
+              <h1 style="font-family: 'Playfair Display', serif; font-size: 48px; color: #231F20; margin-bottom: 10px; line-height: 1.2;">
+                ${title}
+              </h1>
+              ${subtitle && html`
+                <p style="font-size: 20px; color: #666; margin-bottom: 20px; font-style: italic;">
+                  ${subtitle}
+                </p>
+              `}
+              ${dateMarkup}
+              ${tagsMarkup}
+              ${imageMarkup}
+              <div style="margin-top: 30px; line-height: 1.8; color: #333; font-size: 16px;">
+                ${widgetFor('body')}
+              </div>
+            </article>
+          </div>
+        `;
       }
     });
+
+    // Register custom preview styles
     CMS.registerPreviewStyle("/preview.css");
+    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap", { raw: false });
+    
+    // Register preview templates
+    CMS.registerPreviewTemplate("blog", PostPreview);
     CMS.registerPreviewTemplate("pages", PostPreview);
+
+    console.log('%c🎨 CustomFades CMS Ready', 'color: #BFBB50; font-size: 16px; font-weight: bold;');
+    console.log('%cProxy Server: http://localhost:8081', 'color: #666; font-size: 12px;');
+    console.log('%cConfig File: /config.yml', 'color: #666; font-size: 12px;');
+  </script>
+
+  <!-- Netlify Identity Widget -->
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
   </script>
 </body>
 </html>

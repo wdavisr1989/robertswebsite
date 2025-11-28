@@ -1,0 +1,422 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "CustomFades Website"
+		}
+	],
+	"settings": {
+		// Editor Settings
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit"
+		},
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false,
+		"editor.detectIndentation": true,
+		"editor.bracketPairColorization.enabled": true,
+		"editor.guides.bracketPairs": true,
+		"editor.wordWrap": "on",
+		"editor.minimap.enabled": true,
+		"editor.linkedEditing": true,
+		
+		// File Settings
+		"files.autoSave": "onFocusChange",
+		"files.exclude": {
+			"**/.git": true,
+			"**/node_modules": true,
+			"**/build": true,
+			"**/.DS_Store": true,
+			"**/dist": true,
+			"**/.cache": true
+		},
+		"files.associations": {
+			"*.css": "css",
+			"*.md": "markdown",
+			"*.yml": "yaml"
+		},
+		
+		// Language-Specific Settings
+		"[javascript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[javascriptreact]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[typescriptreact]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[json]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[markdown]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.wordWrap": "on"
+		},
+		"[css]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		
+		// JavaScript/TypeScript Settings
+		"javascript.updateImportsOnFileMove.enabled": "always",
+		"typescript.updateImportsOnFileMove.enabled": "always",
+		"javascript.preferences.quoteStyle": "single",
+		"typescript.preferences.quoteStyle": "single",
+		"javascript.suggest.autoImports": true,
+		"typescript.suggest.autoImports": true,
+		
+		// ESLint Settings
+		"eslint.validate": [
+			"javascript",
+			"javascriptreact",
+			"typescript",
+			"typescriptreact"
+		],
+		"eslint.format.enable": true,
+		
+		// Git Settings
+		"git.enableSmartCommit": true,
+		"git.confirmSync": false,
+		"git.autofetch": true,
+		
+		// Terminal Settings
+		"terminal.integrated.defaultProfile.windows": "PowerShell",
+		"terminal.integrated.fontSize": 14,
+		
+		// Search Settings
+		"search.exclude": {
+			"**/node_modules": true,
+			"**/build": true,
+			"**/dist": true,
+			"**/.git": true,
+			"**/package-lock.json": true,
+			"**/yarn.lock": true
+		},
+		
+		// Emmet Settings
+		"emmet.includeLanguages": {
+			"javascript": "javascriptreact"
+		},
+		"emmet.triggerExpansionOnTab": true,
+		
+		// CSS Settings
+		"css.validate": true,
+		"css.lint.unknownAtRules": "ignore",
+		
+		// Project-Specific Settings
+		"html.format.wrapLineLength": 120,
+		"prettier.singleQuote": true,
+		"prettier.useTabs": true,
+		"prettier.tabWidth": 2,
+		"prettier.trailingComma": "es5",
+		"prettier.arrowParens": "always",
+		
+		// Path Intellisense
+		"path-intellisense.mappings": {
+			"/": "${workspaceFolder}/src"
+		}
+	},
+	"extensions": {
+		"recommendations": [
+			// Essential
+			"esbenp.prettier-vscode",
+			"dbaeumer.vscode-eslint",
+			"ms-vscode.vscode-typescript-next",
+			
+			// React/Preact Development
+			"dsznajder.es7-react-js-snippets",
+			"burkeholland.simple-react-snippets",
+			
+			// Git
+			"eamodio.gitlens",
+			"mhutchie.git-graph",
+			
+			// Markdown & Content
+			"yzhang.markdown-all-in-one",
+			"davidanson.vscode-markdownlint",
+			
+			// CSS & Styling
+			"stylelint.vscode-stylelint",
+			"bradlc.vscode-tailwindcss",
+			
+			// Utilities
+			"christian-kohler.path-intellisense",
+			"christian-kohler.npm-intellisense",
+			"visualstudioexptteam.vscodeintellicode",
+			"wix.vscode-import-cost",
+			
+			// Formatting & Linting
+			"editorconfig.editorconfig",
+			
+			// Testing
+			"orta.vscode-jest",
+			
+			// Deployment
+			"shailen.netlify",
+			
+			// Icons & Themes
+			"pkief.material-icon-theme",
+			
+			// Quality of Life
+			"streetsidesoftware.code-spell-checker",
+			"usernamehw.errorlens",
+			"gruntfuggly.todo-tree"
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "🚀 Dev: Start Development Server",
+				"type": "shell",
+				"command": "yarn dev:vite",
+				"problemMatcher": [],
+				"isBackground": true,
+				"group": {
+					"kind": "build",
+					"isDefault": true
+				},
+				"presentation": {
+					"reveal": "always",
+					"panel": "dedicated",
+					"focus": false
+				}
+			},
+			{
+				"label": "📝 CMS: Start Local Backend",
+				"type": "shell",
+				"command": "yarn dev:cms",
+				"problemMatcher": [],
+				"isBackground": true,
+				"presentation": {
+					"reveal": "always",
+					"panel": "dedicated",
+					"focus": false
+				}
+			},
+			{
+				"label": "🏗️ Build: Production Build",
+				"type": "shell",
+				"command": "yarn build:vite",
+				"problemMatcher": [],
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				},
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "👀 Preview: Production Build",
+				"type": "shell",
+				"command": "yarn preview",
+				"problemMatcher": [],
+				"dependsOn": ["🏗️ Build: Production Build"],
+				"presentation": {
+					"reveal": "always",
+					"panel": "dedicated"
+				}
+			},
+			{
+				"label": "🧪 Test: Run All Tests",
+				"type": "shell",
+				"command": "yarn test",
+				"problemMatcher": [],
+				"group": {
+					"kind": "test",
+					"isDefault": true
+				},
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "🧪 Test: Watch Mode",
+				"type": "shell",
+				"command": "yarn test:watch",
+				"problemMatcher": [],
+				"isBackground": true,
+				"group": "test",
+				"presentation": {
+					"reveal": "always",
+					"panel": "dedicated"
+				}
+			},
+			{
+				"label": "📊 Test: Coverage Report",
+				"type": "shell",
+				"command": "yarn test:coverage",
+				"problemMatcher": [],
+				"group": "test",
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "🔍 Lint: Check Code",
+				"type": "shell",
+				"command": "yarn lint",
+				"problemMatcher": ["$eslint-stylish"],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "🔧 Lint: Fix Issues",
+				"type": "shell",
+				"command": "yarn lint:fix",
+				"problemMatcher": ["$eslint-stylish"],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "💅 Format: Check Formatting",
+				"type": "shell",
+				"command": "yarn format:check",
+				"problemMatcher": [],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "✨ Format: Fix Formatting",
+				"type": "shell",
+				"command": "yarn format",
+				"problemMatcher": [],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "📦 Analyze: Bundle Size",
+				"type": "shell",
+				"command": "yarn build:analyze",
+				"problemMatcher": [],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "🚀 Deploy: Netlify Production",
+				"type": "shell",
+				"command": "yarn deploy:netlify",
+				"problemMatcher": [],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "🔍 Deploy: Netlify Preview",
+				"type": "shell",
+				"command": "yarn deploy:preview",
+				"problemMatcher": [],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "📦 Install: Dependencies",
+				"type": "shell",
+				"command": "yarn install",
+				"problemMatcher": [],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "🧹 Clean: Build Artifacts",
+				"type": "shell",
+				"command": "Remove-Item -Recurse -Force build, dist, node_modules/.cache -ErrorAction SilentlyContinue",
+				"problemMatcher": [],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "🔄 Clean Install: Remove & Reinstall",
+				"type": "shell",
+				"command": "Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue; yarn install",
+				"problemMatcher": [],
+				"presentation": {
+					"reveal": "always",
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "🎯 Full Stack: Dev + CMS",
+				"dependsOn": [
+					"🚀 Dev: Start Development Server",
+					"📝 CMS: Start Local Backend"
+				],
+				"problemMatcher": [],
+				"presentation": {
+					"reveal": "always",
+					"panel": "dedicated"
+				}
+			}
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "chrome",
+				"request": "launch",
+				"name": "🌐 Launch Chrome: Development",
+				"url": "http://localhost:3000",
+				"webRoot": "${workspaceFolder}/src",
+				"sourceMaps": true,
+				"preLaunchTask": "🚀 Dev: Start Development Server"
+			},
+			{
+				"type": "chrome",
+				"request": "attach",
+				"name": "🔗 Attach Chrome: Debugger",
+				"port": 9222,
+				"webRoot": "${workspaceFolder}/src"
+			},
+			{
+				"type": "chrome",
+				"request": "launch",
+				"name": "📝 Launch CMS Admin",
+				"url": "http://localhost:3000/admin.html",
+				"webRoot": "${workspaceFolder}/src",
+				"preLaunchTask": "🎯 Full Stack: Dev + CMS"
+			},
+			{
+				"type": "node",
+				"request": "launch",
+				"name": "🧪 Debug Jest Tests",
+				"program": "${workspaceFolder}/node_modules/.bin/jest",
+				"args": ["--runInBand", "--no-cache"],
+				"console": "integratedTerminal",
+				"internalConsoleOptions": "neverOpen"
+			}
+		],
+		"compounds": [
+			{
+				"name": "🎯 Full Development Environment",
+				"configurations": ["🌐 Launch Chrome: Development"],
+				"preLaunchTask": "🎯 Full Stack: Dev + CMS"
+			}
+		]
+	}
+}

@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>CustomFades CMS - Content Manager</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/logo-black.svg" />
+  
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Base Styles -->
+  <style>
+    :root {
+      --cf-primary: #BFBB50;
+      --cf-dark: #231F20;
+      --dev-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --dev-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  </style>
+
+  <!-- Development-Only Styles -->
+  <style id="dev-styles">
+    .dev-env-banner {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: var(--dev-gradient); color: white;
+      padding: 12px 20px; text-align: center; z-index: 10000;
+      font: 600 14px 'Poppins', sans-serif; letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-bottom: 3px solid var(--cf-primary);
+    }
+    .dev-env-banner::before { content: '🚧 '; }
+    .dev-env-banner::after { content: ' 🚧'; }
+
+    .dev-env-indicator {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--dev-gradient); color: white;
+      padding: 10px 20px; border-radius: 50px;
+      font: 600 12px 'Poppins', sans-serif; z-index: 10000;
+      box-shadow: 0 4px 20px rgba(102,126,234,0.4);
+      border: 2px solid var(--cf-primary);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(102,126,234,0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 6px 25px rgba(102,126,234,0.6); }
+    }
+
+    body.dev-mode {
+      font-family: 'Poppins', sans-serif;
+      background: var(--dev-bg);
+      min-height: 100vh;
+      padding-top: 45px;
+    }
+
+    body.dev-mode #cms-loading { background: var(--dev-bg); }
+
+    body.dev-mode .loader {
+      width: 80px; height: 80px;
+      border: 5px solid rgba(102,126,234,0.2);
+      border-top-color: #667eea; border-right-color: #764ba2;
+      box-shadow: 0 0 30px rgba(102,126,234,0.3);
+    }
+
+    body.dev-mode .loading-text {
+      color: var(--cf-primary);
+      font-size: 24px; font-weight: 700;
+      text-shadow: 0 0 20px rgba(191,187,80,0.5);
+    }
+
+    body.dev-mode [class*="AppHeader"] {
+      background: var(--dev-gradient) !important;
+      border-bottom: 3px solid var(--cf-primary) !important;
+      box-shadow: 0 4px 20px rgba(102,126,234,0.3) !important;
+    }
+
+    body.dev-mode [class*="SidebarContainer"] {
+      background: #0f0e1a !important;
+      border-right: 2px solid rgba(102,126,234,0.3) !important;
+    }
+
+    body.dev-mode button[class*="ButtonPrimary"],
+    body.dev-mode button[class*="button-primary"] {
+      background: var(--dev-gradient) !important;
+      color: white !important;
+      border: 2px solid var(--cf-primary) !important;
+    }
+  </style>
+
+  <!-- Production Styles -->
+  <style id="prod-styles">
+    body.prod-mode {
+      font-family: 'Poppins', sans-serif;
+      background: #f8f9fa;
+      min-height: 100vh;
+    }
+
+    body.prod-mode #cms-loading { background: var(--cf-dark); }
+
+    body.prod-mode [class*="AppHeader"] {
+      background: var(--cf-dark) !important;
+      border-bottom: 2px solid var(--cf-primary) !important;
+    }
+
+    body.prod-mode button[class*="ButtonPrimary"] {
+      background: var(--cf-primary) !important;
+      color: var(--cf-dark) !important;
+    }
+  </style>
+
+  <!-- Common Styles -->
+  <style>
+    #cms-loading {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity 0.3s ease;
+    }
+
+    #cms-loading.hidden { opacity: 0; pointer-events: none; }
+
+    .loader {
+      width: 60px; height: 60px;
+      border: 4px solid rgba(191,187,80,0.2);
+      border-top-color: var(--cf-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      margin-top: 20px; color: var(--cf-primary);
+      font: 500 18px 'Poppins', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .loading-subtext {
+      margin-top: 8px;
+      color: rgba(191,187,80,0.7);
+      font-size: 14px;
+    }
+  </style>
+
+  <!-- Environment Detection -->
+  <script>
+    (function() {
+      const isDev = window.location.hostname === 'localhost' || 
+                    window.location.hostname === '127.0.0.1' ||
+                    window.location.hostname.includes('.local') ||
+                    window.location.hostname.includes('dev.') || 
+                    window.location.hostname.includes('staging.');
+      
+      if (isDev) {
+        document.body.classList.add('dev-mode');
+        console.log('%c🚧 DEVELOPMENT MODE 🚧', 'background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 20px; font-size: 16px; font-weight: bold;');
+      } else {
+        document.body.classList.add('prod-mode');
+        console.log('%c✨ PRODUCTION MODE ✨', 'background: #231F20; color: #BFBB50; padding: 10px 20px; font-size: 16px; font-weight: bold;');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <script>
+    if (document.body.classList.contains('dev-mode')) {
+      const banner = document.createElement('div');
+      banner.className = 'dev-env-banner';
+      banner.textContent = 'LOCAL DEVELOPMENT ENVIRONMENT';
+      document.body.appendChild(banner);
+
+      const indicator = document.createElement('div');
+      indicator.className = 'dev-env-indicator';
+      indicator.textContent = '💻 DEV MODE';
+      document.body.appendChild(indicator);
+    }
+  </script>
+
+  <div id="cms-loading">
+    <div class="loader"></div>
+    <div class="loading-text">Loading CustomFades CMS</div>
+    <div class="loading-subtext">Initializing content manager...</div>
+  </div>
+
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  
+  <script>
+    CMS.init({ config: { load_config_file: true } });
+  </script>
+  
+  <script type="module">
+    import htm from 'https://unpkg.com/htm?module';
+    const html = htm.bind(h);
+
+    setTimeout(() => {
+      const loading = document.getElementById('cms-loading');
+      if (loading) {
+        loading.classList.add('hidden');
+        setTimeout(() => loading.remove(), 300);
+      }
+    }, 2000);
+
+    const PostPreview = createClass({
+      render: function() {
+        const {entry, widgetFor} = this.props;
+        const title = entry.getIn(['data', 'title']);
+        
+        return html`
+          <div style="max-width: 900px; margin: 0 auto; padding: 40px 20px; font-family: 'Poppins', sans-serif;">
+            <article style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
+              <h1 style="font-family: 'Playfair Display', serif; font-size: 48px; color: #231F20;">
+                ${title}
+              </h1>
+              <div style="margin-top: 30px; line-height: 1.8; color: #333;">
+                ${widgetFor('body')}
+              </div>
+            </article>
+          </div>
+        `;
+      }
+    });
+
+    CMS.registerPreviewStyle("/preview.css");
+    CMS.registerPreviewTemplate("blog", PostPreview);
+
+    console.log('%c🎨 CustomFades CMS Ready', 'color: #BFBB50; font-size: 16px; font-weight: bold;');
+  </script>
+</body>
+</html>

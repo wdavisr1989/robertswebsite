@@ -4,7 +4,7 @@ import { usePrerenderData } from '@preact/prerender-data-provider';
 import Markdown from 'markdown-to-jsx';
 import { FormattedCodeBlock } from './formatted-code-block';
 
-import style from './style';
+import style from './style.module.css';
 
 const blogs = (props) => {
 	const [data, isLoading] = usePrerenderData(props);

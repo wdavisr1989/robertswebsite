@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import style from './style';
+import style from './style.module.css';
 import { Link } from 'preact-router/match';
 
 const Notfound = () => {
